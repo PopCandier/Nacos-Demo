@@ -14,7 +14,7 @@ https://nacos.io/zh-cn/docs/what-is-nacos.html
 
 我们可以从`github`下载安装包，有需要构建的源码包，也有已经可以直接启动的nacos工程
 
-![1565018240100](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565018240100.png)
+![1565018240100](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018240100.png)
 
 选择`releases`，然后有作者打包好的源码包，这里就是源码包。
 
@@ -28,25 +28,25 @@ mvn -Prelease-nacos clean install -U
 
 然后等待构建完成，
 
-![1565018386261](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565018386261.png)
+![1565018386261](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018386261.png)
 
 构建完成后，在`distribution`模块下会生成`target`文件，里面就是可以启动服务
 
-![1565018453890](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565018453890.png)
+![1565018453890](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018453890.png)
 
 我们打开这个文件夹
 
-![1565018498713](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565018498713.png)
+![1565018498713](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018498713.png)
 
 支持linux和window两个版本的启动和终止。由于现在是window，所以我们cd到这个目录下，启动`nacos`
 
-![1565018608738](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565018608738.png)
+![1565018608738](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018608738.png)
 
 接着我们在url地址上输入`http://192.168.216.1:8848/nacos/index.html`，查看，
 
 用户名密码都是`nacos`
 
-![1565018736159](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565018736159.png)
+![1565018736159](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018736159.png)
 
 ### 开始构建一个Nacos项目
 
@@ -62,7 +62,7 @@ mvn -Prelease-nacos clean install -U
 
 我们在刚刚启动的Nacos服务随便配置点东西。
 
-![1565019685740](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565019685740.png)
+![1565019685740](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565019685740.png)
 
 然后在`application.properties`配置些参数，目的是和Nacos建立连接。
 
@@ -107,15 +107,15 @@ public class NacosConfigController {
 }
 ```
 
-![1565020845837](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565020845837.png)
+![1565020845837](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020845837.png)
 
-![1565020854072](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565020854072.png)
+![1565020854072](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020854072.png)
 
 并且你在`nacos`修改配置，web项目可以轻松感知到变化
 
-![1565020975687](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565020975687.png)
+![1565020975687](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020975687.png)
 
-![1565020987732](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565020987732.png)
+![1565020987732](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020987732.png)
 
 ### Nacos 的思考
 
@@ -176,5 +176,5 @@ public class NacosSdkDemo {
 }
 ```
 
-![1565022595679](C:\Users\99405\AppData\Roaming\Typora\typora-user-images\1565022595679.png)
+![1565022595679](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565022595679.png)
 
