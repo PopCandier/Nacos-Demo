@@ -2,9 +2,11 @@ package com.example.nacos.nacosdemo;
 
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
+import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 /**
  * @author Pop
@@ -28,6 +30,18 @@ public class NacosSdkDemo {
             String content = configService.getConfig(dataId,groupId,3000);
 
             System.out.println(content);
+            //对这个配置进行监听。
+            configService.addListener(dataId, groupId, new Listener() {
+                @Override
+                public Executor getExecutor() {
+                    return null;
+                }
+
+                @Override
+                public void receiveConfigInfo(String configInfo) {
+                    System.out.println(configInfo);
+                }
+            });
 
         } catch (NacosException e) {
             e.printStackTrace();
