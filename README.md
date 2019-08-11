@@ -14,7 +14,7 @@ https://nacos.io/zh-cn/docs/what-is-nacos.html
 
 我们可以从`github`下载安装包，有需要构建的源码包，也有已经可以直接启动的nacos工程
 
-![1565018240100](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565018240100.png)
+![1565018240100](./img/1565018240100.png)
 
 选择`releases`，然后有作者打包好的源码包，这里就是源码包。
 
@@ -62,7 +62,7 @@ mvn -Prelease-nacos clean install -U
 
 我们在刚刚启动的Nacos服务随便配置点东西。
 
-![1565019685740](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565019685740.png)
+![1565019685740](./img/1565019685740.png)
 
 然后在`application.properties`配置些参数，目的是和Nacos建立连接。
 
@@ -107,15 +107,15 @@ public class NacosConfigController {
 }
 ```
 
-![1565020845837](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020845837.png)
+![1565020845837](./img/1565020845837.png)
 
-![1565020854072](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020854072.png)
+![1565020854072](./img/1565020854072.png)
 
 并且你在`nacos`修改配置，web项目可以轻松感知到变化
 
-![1565020975687](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020975687.png)
+![1565020975687](./img/1565020975687.png)
 
-![1565020987732](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565020987732.png)
+![1565020987732](./img/1565020987732.png)
 
 ### Nacos 的思考
 
@@ -176,7 +176,7 @@ public class NacosSdkDemo {
 }
 ```
 
-![1565022595679](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565022595679.png)
+![1565022595679](./img/1565022595679.png)
 
 
 
@@ -672,11 +672,11 @@ private void safeNotifyListener(final String dataId, final String group, final S
 
 其实nacos是支持mysql的。
 
-![1565115290108](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565115290108.png)
+![1565115290108](./img/1565115290108.png)
 
 我们新建一个mysql数据库。然后将sql文件导入。
 
-![1565115349355](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565115349355.png)
+![1565115349355](./img/1565115349355.png)
 
 由于要配置mysql，我们必须使用集群环境，但是为了偷懒，我们将三个全部设置成本地，将cluster.config.exmaple拷贝一份出来，并且重命名，并加入以下配置。
 
@@ -717,14 +717,27 @@ startup.cmd -m cluster
 
 我们添加一个
 
-![1565115557638](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565115557638.png)
+![1565115557638](./img/1565115557638.png)
 
-![1565115596034](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565115596034.png)
+![1565115596034](./img/1565115596034.png)
 
-![1565115613631](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565115613631.png)
+![1565115613631](./img/1565115613631.png)
 
 刷新数据库。
 
-![1565115639446](https://github.com/PopCandier/Nacos-Demo/blob/master/img/1565115639446.png)
+![1565115639446](./img/1565115639446.png)
 
 可见数据库已经配置成功了，替换成mysql只是方便管理，你不使用mysql，nacos默认使用derby。
+
+### Nacos的长时间轮询
+
+#### 理解何为长轮询
+
+长轮询的概念主要是客户端发起一个请求给服务端，服务端会将这个请求抓住，不让他返回，等待一段时间后再次返回，在发起请求和返回请求之间的时间差，就是长轮询的允许的时间。
+
+当时客户端不会运行一直等待，所以长轮询是有超时时间的概念的，Nacos的长轮询超时时间一般是30000ms，也就是30秒，但是响应时间会比这个短一些，主要是为了给通信传输空出时间，所以长轮询会在29.5秒加上通信时间，这个范围之间。
+
+
+
+### Nacos的集群实现
+
