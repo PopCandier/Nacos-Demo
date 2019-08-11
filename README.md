@@ -731,11 +731,69 @@ startup.cmd -m cluster
 
 ### Nacos的长时间轮询
 
+* 要去检查配置的变化
+* 实时数据的通知
+
 #### 理解何为长轮询
 
 长轮询的概念主要是客户端发起一个请求给服务端，服务端会将这个请求抓住，不让他返回，等待一段时间后再次返回，在发起请求和返回请求之间的时间差，就是长轮询的允许的时间。
 
 当时客户端不会运行一直等待，所以长轮询是有超时时间的概念的，Nacos的长轮询超时时间一般是30000ms，也就是30秒，但是响应时间会比这个短一些，主要是为了给通信传输空出时间，所以长轮询会在29.5秒加上通信时间，这个范围之间。
+
+作为长轮询的入口，其实在这里个地方，有一个检查是否更新的问题
+
+```java
+List<String> checkUpdateConfigStr(String probeUpdateString, boolean isInitializingCacheList) throws IOException {
+
+        List<String> params = Arrays.asList(Constants.PROBE_MODIFY_REQUEST, probeUpdateString);
+
+        List<String> headers = new ArrayList<String>(2);
+        headers.add("Long-Pulling-Timeout");
+        headers.add("" + timeout);
+
+        // told server do not hang me up if new initializing cacheData added in
+        if (isInitializingCacheList) {
+            headers.add("Long-Pulling-Timeout-No-Hangup");
+            headers.add("true");
+        }
+
+        if (StringUtils.isBlank(probeUpdateString)) {
+            return Collections.emptyList();
+        }
+
+        try {
+            HttpResult result = agent.httpPost(Constants.CONFIG_CONTROLLER_PATH + "/listener", headers, params,
+                agent.getEncode(), timeout);
+                
+                /....
+
+```
+
+很明显的是，他会去请求这个`/listener`这个地址，而我们之前在前面启动的这个nacos的dashbord中，也同样存在处理这个请求的controller，找到ConfigController，位于nacos源码的config模块中。
+
+```java
+@RequestMapping(value = "/listener", method = RequestMethod.POST)
+    public void listener(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        request.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", true);
+        String probeModify = request.getParameter("Listening-Configs");
+        if (StringUtils.isBlank(probeModify)) {
+            throw new IllegalArgumentException("invalid probeModify");
+        }
+
+        probeModify = URLDecoder.decode(probeModify, Constants.ENCODE);
+
+        Map<String, String> clientMd5Map;
+        try {
+            clientMd5Map = MD5Util.getClientMd5Map(probeModify);
+        } catch (Throwable e) {
+            throw new IllegalArgumentException("invalid probeModify");
+        }
+
+        // do long-polling 很明显，这里就是做长轮询的地方
+        inner.doPollingConfig(request, response, clientMd5Map, probeModify.length());
+    }
+```
 
 
 
