@@ -799,3 +799,8 @@ List<String> checkUpdateConfigStr(String probeUpdateString, boolean isInitializi
 
 ### Nacos的集群实现
 
+raft算法，paxsoc的延伸
+
+
+
+用于测试合并的iss66分支
